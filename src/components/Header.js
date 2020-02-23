@@ -56,15 +56,15 @@ const Header = ({ history }) => {
         <div className="wrapper">
           <div className="inner-header">
             <div className="logo">
-              <Link to="/">HAMBRG.</Link>
+              <Link to="/">LA Jazziniere</Link>
             </div>
             <div className="menu">
               <button disabled={disabled} onClick={handleMenu}>
                 {state.menuName}
               </button>
             </div>
-            <div className="header">
-              <NavLink
+            {/* <div className="header"> */}
+            {/* <NavLink
                 to="/"
                 exact
                 activeStyle={{
@@ -73,8 +73,8 @@ const Header = ({ history }) => {
                 }}
               >
                 Home
-              </NavLink>
-              <NavLink
+              </NavLink> */}
+            {/* <NavLink
                 to="/opportunities"
                 exact
                 activeStyle={{
@@ -103,8 +103,8 @@ const Header = ({ history }) => {
                 }}
               >
                 Solution
-              </NavLink>
-            </div>
+              </NavLink> */}
+            {/* </div> */}
           </div>
         </div>
       </div>

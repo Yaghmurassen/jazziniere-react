@@ -46,6 +46,11 @@ const Hamburger = ({ state }) => {
       staggerRevealClose(reveal2, reveal1);
       // Set menu to display none
       gsap.to(menuLayer, { duration: 1, css: { display: "none" } });
+      gsap.to(document.body, {
+        duration: 1,
+        css: { position: "unset" }
+      });
+      // document.body.style.position = "unset";
     } else if (
       state.clicked === true ||
       (state.clicked === true && state.initial === null)
@@ -61,21 +66,29 @@ const Hamburger = ({ state }) => {
       staggerReveal(reveal1, reveal2);
       fadeInUp(info);
       staggerText(line1, line2, line3);
+      gsap.to(document.body, {
+        duration: 1,
+        css: { position: "fixed" },
+        delay: 1
+      });
+      // document.body.style.position = "fixed";
     }
   }, [state]);
 
   return (
-    <div ref={el => (menuLayer = el)} className='hamburger-menu'>
+    <div ref={el => (menuLayer = el)} className="hamburger-menu">
       <div
         ref={el => (reveal1 = el)}
-        className='menu-secondary-background-color'></div>
-      <div ref={el => (reveal2 = el)} className='menu-layer'>
+        className="menu-secondary-background-color"
+      ></div>
+      <div ref={el => (reveal2 = el)} className="menu-layer">
         <div
           ref={el => (cityBackground = el)}
-          className='menu-city-background'></div>
-        <div className='container'>
-          <div className='wrapper'>
-            <div className='menu-links'>
+          className="menu-city-background"
+        ></div>
+        <div className="container">
+          <div className="wrapper">
+            <div className="menu-links">
               <nav>
                 <ul>
                   <li>
@@ -83,7 +96,8 @@ const Hamburger = ({ state }) => {
                       onMouseEnter={e => handleHover(e)}
                       onMouseOut={e => handleHoverExit(e)}
                       ref={el => (line1 = el)}
-                      to='/opportunities'>
+                      to="/opportunities"
+                    >
                       Opportunities
                     </Link>
                   </li>
@@ -92,7 +106,8 @@ const Hamburger = ({ state }) => {
                       onMouseEnter={e => handleHover(e)}
                       onMouseOut={e => handleHoverExit(e)}
                       ref={el => (line2 = el)}
-                      to='/solutions'>
+                      to="/solutions"
+                    >
                       Solutions
                     </Link>
                   </li>
@@ -101,13 +116,14 @@ const Hamburger = ({ state }) => {
                       onMouseEnter={e => handleHover(e)}
                       onMouseOut={e => handleHoverExit(e)}
                       ref={el => (line3 = el)}
-                      to='/contact-us'>
+                      to="/contact-us"
+                    >
                       Contact us
                     </Link>
                   </li>
                 </ul>
               </nav>
-              <div ref={el => (info = el)} className='info'>
+              <div ref={el => (info = el)} className="info">
                 <h3>Our Promise</h3>
                 <p>
                   The passage experienced a surge in popularity during the 1960s
@@ -116,14 +132,15 @@ const Hamburger = ({ state }) => {
                   their software.
                 </p>
               </div>
-              <div className='locations'>
+              <div className="locations">
                 Locations:
                 {/* Returning the list of cities */}
                 {cities.map(el => (
                   <span
                     key={el.name}
                     onMouseEnter={() => handleCity(el.image, cityBackground)}
-                    onMouseOut={() => handleCityReturn(cityBackground)}>
+                    onMouseOut={() => handleCityReturn(cityBackground)}
+                  >
                     {el.name}
                   </span>
                 ))}

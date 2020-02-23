@@ -13,7 +13,7 @@ import Opportunities from "./components/Opportunities";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 
 const routes = [
-  { path: "/", name: "Home", Component: Home },
+  // { path: "/", name: "Home", Component: Home },
   { path: "/opportunities", name: "Opportunities", Component: Opportunities },
   { path: "/solutions", name: "Solutions", Component: Solutions },
   { path: "/contact-us", name: "Contact", Component: Contact }
@@ -65,10 +65,10 @@ function App() {
       <Router>
         <div className="App">
           <Header />
-          <div className="container">
-            {/* <div className="wrapper"> */}
-            <div className="home">
-              {routes.map(({ path, Component }) => (
+          {/* <div className="container"> */}
+          {/* <div className="wrapper"> */}
+          {/* <div className="home"> */}
+          {/* {routes.map(({ path, Component }) => (
                 <Route key={path} exact path={path}>
                   {({ match }) => (
                     <CSSTransition
@@ -85,10 +85,11 @@ function App() {
                     </CSSTransition>
                   )}
                 </Route>
-              ))}
-            </div>
-            {/* </div> */}
-          </div>
+              ))} */}
+          <Home />
+          {/* </div> */}
+          {/* </div> */}
+          {/* </div> */}
         </div>
       </Router>
     </>

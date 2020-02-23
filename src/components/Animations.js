@@ -1,4 +1,17 @@
 import gsap from "gsap";
+import * as ScrollMagic from "scrollmagic"; // Or use scrollmagic-with-ssr to avoid server rendering problems
+import {
+  TweenMax,
+  TimelineMax,
+  Power1,
+  Power2,
+  Back,
+  Expo,
+  Power4
+} from "gsap";
+import { ScrollMagicPluginGsap } from "scrollmagic-plugin-gsap";
+
+ScrollMagicPluginGsap(ScrollMagic, TweenMax, TimelineMax);
 
 // OPEN MENU
 export const staggerReveal = (node1, node2) => {
