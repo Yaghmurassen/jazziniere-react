@@ -1,7 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import gsap from "gsap";
 import * as ScrollMagic from "scrollmagic"; // Or use scrollmagic-with-ssr to avoid server rendering problems
-import Title from "./Title";
 import {
   TweenMax,
   TimelineMax,
@@ -40,10 +40,7 @@ export default class Home extends React.Component {
         gsap.to(".one", 0.0001, {
           transform: "scale(1)"
         });
-        // gsap.to("section", 0.1, {
-        //   height: "125vh"
-        // });
-        console.log("onCOmlplete : ", document.body.style.width);
+        console.log("onComlplete : ", document.body.style.width);
       }
     });
 
@@ -110,6 +107,15 @@ export default class Home extends React.Component {
           opacity: 0
         },
         "-=10"
+      )
+      .to(
+        ".btn-groupe, .btn-culture, .btn-collectif, .btn-propos",
+        8,
+        {
+          opacity: 1,
+          display: "block"
+        },
+        "-=10"
       );
 
     new ScrollMagic.Scene({
@@ -122,30 +128,179 @@ export default class Home extends React.Component {
       .addTo(this.controller); // assign the scene to the controller
   }
 
+  HoverGroup = () => {
+    console.log("On Hover Group");
+    gsap.fromTo(
+      ".title-groupe",
+      1,
+      {
+        x: -100,
+        opacity: 0,
+        display: "inline-block"
+      },
+      {
+        x: 0,
+        opacity: 1
+      }
+    );
+    gsap.to(".btn-groupe", 1, {
+      backgroundColor: "rgba(0, 0, 0, 0.67)"
+    });
+  };
+
+  HoverLeaveGroup = () => {
+    console.log("On Leave Group");
+    gsap.to(".title-groupe", 0.3, {
+      opacity: 0
+      // x: 70
+    });
+    gsap.to(".btn-groupe", 0.7, {
+      backgroundColor: "transparent"
+    });
+  };
+
+  HoverCulture = () => {
+    console.log("On Hover Culture");
+    gsap.fromTo(
+      ".title-culture",
+      1,
+      {
+        x: -100,
+        opacity: 0,
+        display: "block"
+      },
+      {
+        x: 0,
+        opacity: 1
+      }
+    );
+    gsap.to(".btn-culture", 1, {
+      backgroundColor: "rgba(0, 0, 0, 0.67)"
+    });
+  };
+
+  HoverLeaveCulture = () => {
+    console.log("On Leave Culture");
+    gsap.to(".title-culture", 0.3, {
+      opacity: 0
+    });
+    gsap.to(".btn-culture", 0.7, {
+      backgroundColor: "transparent"
+    });
+  };
+
+  HoverCollectif = () => {
+    console.log("On Hover Collectif");
+    gsap.fromTo(
+      ".title-collectif",
+      1,
+      {
+        x: -100,
+        opacity: 0,
+        display: "block"
+      },
+      {
+        x: 0,
+        opacity: 1
+      }
+    );
+    gsap.to(".btn-collectif", 1, {
+      backgroundColor: "rgba(0, 0, 0, 0.67)"
+    });
+  };
+
+  HoverLeaveCollectif = () => {
+    console.log("On Leave Collectif");
+    gsap.to(".title-collectif", 0.3, {
+      opacity: 0
+    });
+    gsap.to(".btn-collectif", 0.7, {
+      backgroundColor: "transparent"
+    });
+  };
+
+  HoverPropos = () => {
+    console.log("On Hover propos");
+    gsap.fromTo(
+      ".title-propos",
+      1,
+      {
+        x: -100,
+        opacity: 0,
+        display: "block"
+      },
+      {
+        x: 0,
+        opacity: 1
+      }
+    );
+    gsap.to(".btn-propos", 1, {
+      backgroundColor: "rgba(0, 0, 0, 0.67)"
+    });
+  };
+
+  HoverLeavePropos = () => {
+    console.log("On Leave propos");
+    gsap.to(".title-propos", 0.3, {
+      opacity: 0
+    });
+    gsap.to(".btn-propos", 0.7, {
+      backgroundColor: "transparent"
+    });
+  };
+
   render() {
     return (
       <section>
-        {/* <nav>
-          <div className="nav-wrapper">
-            <h4>Ready co.</h4>
-            <a className="button" href="#">
-              Sign Up
-            </a>
-          </div>
-        </nav> */}
         <div className="container">
           <div className="title">Jazzinière</div>
           <div className="images">
             <div className="image-wrapper one" ref={this.scale}>
-              <img src={full} />
+              <img src={full} alt="full" />
             </div>
             <div className="image-wrapper two">
-              <img src={middle} />
+              <img src={middle} alt="middle" />
             </div>
             <div className="image-wrapper three">
-              <img src={bas} style={{ height: "200vh" }} />
+              <img src={bas} style={{ height: "200vh" }} alt="bas" />
             </div>
           </div>
+          <button
+            className="btn btn-groupe"
+            onMouseEnter={() => this.HoverGroup()}
+            onMouseLeave={() => this.HoverLeaveGroup()}
+          >
+            <Link className="title-groupe" to="/opportunities">
+              Voir les groupes
+            </Link>
+          </button>
+          <button
+            className="btn btn-culture"
+            onMouseEnter={() => this.HoverCulture()}
+            onMouseLeave={() => this.HoverLeaveCulture()}
+          >
+            <Link to="/culture" className="title-culture">
+              Voir la culture
+            </Link>
+          </button>
+          <button
+            className="btn btn-collectif"
+            onMouseEnter={() => this.HoverCollectif()}
+            onMouseLeave={() => this.HoverLeaveCollectif()}
+          >
+            <Link to="/collectif" className="title-collectif">
+              Voir les collectifs
+            </Link>
+          </button>
+          <button
+            className="btn btn-propos"
+            onMouseEnter={() => this.HoverPropos()}
+            onMouseLeave={() => this.HoverLeavePropos()}
+          >
+            <Link to="/a-propos" className="title-propos">
+              A propos
+            </Link>
+          </button>
 
           {/* <footer>
             <div className="footer-wrapper">
@@ -158,16 +313,6 @@ export default class Home extends React.Component {
             </div>
           </footer> */}
         </div>
-
-        {/* <button className="btn btn-home btn-concert">
-          <a href="/concert.html">Go to barba's page</a>
-        </button>
-        <button className="btn btn-home btn-goodcase">
-          <a href="/goodcaseoftheblues.html">Go to barba's page</a>
-        </button>
-        <button className="btn btn-home btn-contact">
-          <a href="/contact.html">Go to barba's page</a>
-        </button> */}
       </section>
     );
   }

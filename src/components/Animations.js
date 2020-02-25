@@ -113,3 +113,33 @@ export const handleCityReturn = target => {
     skewY: 0
   });
 };
+
+export const HoverPropos = () => {
+  console.log("On Hover propos");
+  gsap.fromTo(
+    ".title-propos",
+    1,
+    {
+      x: -100,
+      opacity: 0,
+      display: "block"
+    },
+    {
+      x: 0,
+      opacity: 1
+    }
+  );
+  gsap.to(".btn-propos", 1, {
+    backgroundColor: "rgba(0, 0, 0, 0.67)"
+  });
+};
+
+export const HoverLeavePropos = () => {
+  console.log("On Leave propos");
+  gsap.to(".title-propos", 0.3, {
+    opacity: 0
+  });
+  gsap.to(".btn-propos", 0.7, {
+    backgroundColor: "transparent"
+  });
+};
