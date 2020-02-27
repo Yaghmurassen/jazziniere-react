@@ -1,18 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 import gsap from "gsap";
+
 import * as ScrollMagic from "scrollmagic"; // Or use scrollmagic-with-ssr to avoid server rendering problems
-import {
-  TweenMax,
-  TimelineMax,
-  Power1,
-  Power2,
-  Back,
-  Expo,
-  Power4
-} from "gsap";
+import { TweenMax, TimelineMax } from "gsap";
 import { ScrollMagicPluginGsap } from "scrollmagic-plugin-gsap";
 import { CSSRulePlugin, CSSPlugin } from "gsap/all";
+
+import Contact from "../components/Contact";
+import Solutions from "../components/Solutions";
+import Opportunities from "../components/Opportunities";
 
 import full from "./../images/home/full.png";
 import middle from "./../images/home/middle.png";
@@ -28,6 +27,52 @@ export default class Home extends React.Component {
     this.controller = new ScrollMagic.Controller({});
     this.scale = React.createRef();
   }
+
+  routes = [
+    { path: "/opportunities", name: "Opportunities", Component: Opportunities },
+    { path: "/solutions", name: "Solutions", Component: Solutions },
+    { path: "/contact-us", name: "Contact", Component: Contact }
+  ];
+
+  onEnter = node => {
+    // console.log("onEnter document.body : ", document.body);
+    // console.log(
+    //   "onEnter Element : ",
+    //   node.children[0].firstElementChild.querySelector(".line-wrap")
+    // );
+    gsap.from(
+      [node.children[0].firstElementChild, node.children[0].lastElementChild],
+      0.6,
+      {
+        y: 30,
+        delay: 0.6,
+        ease: "power3.InOut",
+        opacity: 0,
+        stagger: {
+          amount: 0.6
+        }
+      }
+    );
+  };
+
+  onExit = node => {
+    // console.log(
+    //   "onExit Element : ",
+    //   node.children[0].firstElementChild.childNodes[0].className
+    // );
+    // console.log("onExir Element : ", node.querySelector(".inner"));
+    gsap.to(
+      [node.children[0].firstElementChild, node.children[0].lastElementChild],
+      0.6,
+      {
+        y: -30,
+        ease: "power3.InOut",
+        stagger: {
+          amount: 0.2
+        }
+      }
+    );
+  };
 
   componentDidMount() {
     gsap.registerPlugin(CSSPlugin);
@@ -250,6 +295,7 @@ export default class Home extends React.Component {
   };
 
   render() {
+    console.log(this.routes);
     return (
       <section>
         <div className="container">
@@ -273,13 +319,21 @@ export default class Home extends React.Component {
             <Link className="title-groupe" to="/opportunities">
               Voir les groupes
             </Link>
+            {/* <Route
+              exact
+              path="/opportunities"
+              component={Opportunities}
+              className="title-groupe"
+            >
+              Voir les groupes
+            </Route> */}
           </button>
           <button
             className="btn btn-culture"
             onMouseEnter={() => this.HoverCulture()}
             onMouseLeave={() => this.HoverLeaveCulture()}
           >
-            <Link to="/culture" className="title-culture">
+            <Link to="/solutions" className="title-culture">
               Voir la culture
             </Link>
           </button>
@@ -301,6 +355,24 @@ export default class Home extends React.Component {
               A propos
             </Link>
           </button>
+          {this.routes.map(({ path, Component }) => (
+            <Route key={path} exact path={path}>
+              {({ match }) => (
+                <CSSTransition
+                  in={match != null}
+                  timeout={1200}
+                  classNames="page"
+                  onExit={this.onExit}
+                  onEntering={this.onExit}
+                  unmountOnExit
+                >
+                  <div className="page">
+                    <Component />
+                  </div>
+                </CSSTransition>
+              )}
+            </Route>
+          ))}
 
           {/* <footer>
             <div className="footer-wrapper">
