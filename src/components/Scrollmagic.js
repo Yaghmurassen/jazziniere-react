@@ -1,3 +1,4 @@
+import React from "react";
 import * as ScrollMagic from "scrollmagic"; // Or use scrollmagic-with-ssr to avoid server rendering problems
 import {
   TweenMax,
@@ -18,27 +19,29 @@ export default class ScrollMagik extends React.Component {
     this.state = {};
   }
 
+  scrollAnimation = () => {
+    const tl = new TimelineMax();
+
+    tl.to(".animation", 2, {
+      top: "0%",
+      ease: Expo.easeInOut,
+      delay: -2
+    });
+
+    const controller = new ScrollMagic.Controller();
+
+    new ScrollMagic.Scene({
+      triggerElement: ".animation-2",
+      duration: 2000,
+      triggerHook: "onLeave"
+    })
+      .setTween(tl)
+      .setPin(".animation-4")
+      .addTo(controller);
+  };
+
   componentDidMount() {
-    scrollAnimation4 = () => {
-      const tl = new TimelineMax();
-
-      tl.to(".animation-4", 2, {
-        top: "0%",
-        ease: Expo.easeInOut,
-        delay: -2
-      });
-
-      const controller = new ScrollMagic.Controller();
-
-      new ScrollMagic.Scene({
-        triggerElement: ".animation-2",
-        duration: 2000,
-        triggerHook: "onLeave"
-      })
-        .setTween(tl)
-        .setPin(".animation-4")
-        .addTo(controller);
-    };
+    this.scrollAnimation();
   }
 
   render() {
