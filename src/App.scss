@@ -53,6 +53,7 @@ body {
 header {
   height: 100px;
   position: absolute;
+  width: 98vw;
   .inner-header {
     position: relative;
     z-index: 10;
@@ -260,7 +261,7 @@ header {
 
   .page {
     position: absolute;
-
+    top: 140px;
     .inner {
       display: flex;
       justify-content: center;

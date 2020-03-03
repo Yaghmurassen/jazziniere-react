@@ -297,7 +297,7 @@ export default class Home extends React.Component {
   render() {
     console.log(this.routes, this.section.current);
     return (
-      <section ref={this.section}>
+      <section className="inner" ref={this.section}>
         <div className="container">
           <div className="title">Jazzinière</div>
           <div className="images">

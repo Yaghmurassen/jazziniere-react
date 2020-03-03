@@ -21,37 +21,48 @@ const routes = [
 
 function App() {
   const onEnter = node => {
-    // console.log("onEnter document.body : ", document.body);
+    console.log("onEnter document.body : ", document.body);
     // console.log(
     //   "onEnter Element : ",
     //   node.children[0].firstElementChild.querySelector(".line-wrap")
     // );
+    console.log("onEnter Element : ", node.children[0].firstElementChild);
+
     gsap.from(
       [node.children[0].firstElementChild, node.children[0].lastElementChild],
       0.6,
       {
-        y: 30,
+        // y: 30,
         delay: 0.6,
         ease: "power3.InOut",
-        opacity: 0,
-        stagger: {
-          amount: 0.6
-        }
+        opacity: 1
+        // stagger: {
+        //   amount: 0.6
+        // }
       }
     );
   };
 
   const onExit = node => {
-    // console.log(
-    //   "onExit Element : ",
-    //   node.children[0].firstElementChild.childNodes[0].className
-    // );
-    // console.log("onExir Element : ", node.querySelector(".inner"));
+    console.log(
+      "onExit Element : ",
+      node.children[0].firstElementChild.childNodes[0].className
+    );
+    console.log(
+      "onExit Element : ",
+      node.querySelector(".inner"),
+      node.children[0].firstElementChild
+    );
+    console.log("node: ", node);
     gsap.to(
-      [node.children[0].firstElementChild, node.children[0].lastElementChild],
+      [
+        node.children[0].firstElementChild,
+        node.children[0],
+        node.children[0].lastElementChild
+      ],
       0.6,
       {
-        y: -30,
+        // y: -30,
         ease: "power3.InOut",
         stagger: {
           amount: 0.2
@@ -65,9 +76,6 @@ function App() {
       <Router>
         <div className="App">
           <Header />
-          {/* <div className="container"> */}
-          {/* <div className="wrapper"> */}
-          {/* <div className="home"> */}
           {routes.map(({ path, Component }) => (
             <Route key={path} exact path={path}>
               {({ match }) => (
@@ -86,10 +94,6 @@ function App() {
               )}
             </Route>
           ))}
-          {/* <Home /> */}
-          {/* </div> */}
-          {/* </div> */}
-          {/* </div> */}
         </div>
       </Router>
     </>
