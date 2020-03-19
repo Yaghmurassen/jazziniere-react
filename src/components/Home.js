@@ -155,12 +155,12 @@ export default class Home extends React.Component {
       )
       .to(
         ".btn-groupe, .btn-culture, .btn-collectif, .btn-propos",
-        8,
+        10,
         {
           opacity: 1,
           display: "block"
         },
-        "-=10"
+        "-=3"
       );
 
     new ScrollMagic.Scene({
