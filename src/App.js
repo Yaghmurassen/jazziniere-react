@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Route } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
-import { gsap, Power2, Power1, Power3 } from "gsap";
+import { gsap, TimelineLite, Power2, Power1, Power3 } from "gsap";
 import CSSRulePlugin from "gsap/CSSRulePlugin";
 
 import "./App.scss";
@@ -20,102 +20,111 @@ const routes = [
   { path: "/", name: "Home", Component: Home },
   { path: "/opportunities", name: "Opportunities", Component: Opportunities },
   { path: "/solutions", name: "Solutions", Component: Solutions },
-  { path: "/contact-us", name: "Contact", Component: Contact }
+  { path: "/contact-us", name: "Contact", Component: Contact },
 ];
 
-function App() {
-  let mainReveal = CSSRulePlugin.getRule(".scrollmagic-pin-spacer:before");
+const App = () => {
+  let appReveal = CSSRulePlugin.getRule(".App:after");
+  let mainReveal = CSSRulePlugin.getRule(".main:after");
+  let homeReveal = CSSRulePlugin.getRule(".scrollmagic-pin-spacer:after");
+  let pageReveal = CSSRulePlugin.getRule(".page::after");
+  let pReveal = useRef(null);
+  // let pageReveal = useRef(null);
+  let divReveal = useRef(null);
+  let divReveal2 = useRef(null);
 
-  const onEnter = node => {
-    // console.log("onEnter document.body : ", document.body);
-    // console.log(
-    //   "onEnter Element : ",
-    //   node.children[0].firstElementChild.querySelector(".line-wrap")
-    // );
-    // console.log("onEnter Element : ", node.children[0].firstElementChild);
+  useEffect(() => {
 
-    // gsap.from(
-    //   [node.children[0].firstElementChild, node.children[0].lastElementChild],
-    //   0.6,
-    //   {
-    //     // y: 30,
-    //     delay: 0.6,
-    //     ease: Power3.InOut,
-    //     opacity: 1
-    //     // stagger: {
-    //     //   amount: 0.6
-    //     // }
-    //   }
-    // );
-    gsap.to(mainReveal, 1.5, {
-      width: "100%",
-      ease: Power1.easeInOut,
-      delay: 0.5
-    });
-    gsap.to(".transition-title", 0.2, {
-      // display: "block",
-      opacity: 1
-    });
-    gsap.from(".transition-title", 1, {
-      // display: "block !important",
-      // delay: 0.8,
-      ease: "power3.out",
-      // y: 64,
-      height: "15px",
-      zIndex: 9999
-    });
-    // gsap.to(mainReveal, 2, {
-    //   left: "0px",
-    //   width: "0%",
-    //   ease: Power2.easeInOut,
-    //   delay: 1
-    // });
-    // gsap.to(".transition-title", 1, {
-    //   opacity: 0,
-    //   ease: "power3.out",
-    //   delay: -2
-    // });
-  };
-  const onExit = node => {
-    gsap.to(mainReveal, 2, {
-      left: "0px",
-      width: "0%",
-      ease: Power2.easeInOut,
-      delay: 1
-    });
-    gsap.to(".transition-title", 1, {
-      opacity: 0,
-      ease: "power3.out",
-      delay: -2
-    });
-    // console.log(
-    //   "onExit Element : ",
-    //   node.children[0].firstElementChild.childNodes[0].className
-    // );
-    // console.log(
-    //   "onExit Element : ",
-    //   node.querySelector(".inner"),
-    //   node.children[0].firstElementChild
-    // );
-    // console.log("node: ", node);
+    const onEnter = (node) => {
+      let pageReveal = CSSRulePlugin.getRule(".page:after");
+      let tl = new TimelineLite();
+      console.log("ON ENTER APP", pageReveal, pReveal);
+      // RTL EFFECT TRANSITION
+      tl.to(pageReveal, {
+        duration: 1.5, cssRule: {
+          width: "100%",
+          ease: "Power2.easeInOut",
+          // delay: 0.5,
+        }
+      });
+      tl.from(pageReveal, {
+        duration: 3, cssRule: {
+          width: "0%",
+          ease: "Power2.easeInOut",
+          delay: 2.5,
+        }
+      });
+      // gsap.to(pReveal, 3, {
+      //   transform: "scale(2)",
+      //   // opacity: 0,
+      //   // height: "10px",
+      //   delay: 1,
+      // });
+    }
+    const onExit = (node) => {
+      let el = node.children[0];
+      let pseudo = window.getComputedStyle(el, "::after");
+      let _width = pseudo.getPropertyValue("width");
+      let main = CSSRulePlugin.getRule(".page");
+      let mainAfter = CSSRulePlugin.getRule(".page:after");
 
-    console.log("ON EXIT");
-    // gsap.to(
-    //   [
-    //     node.children[0].firstElementChild,
-    //     node.children[0],
-    //     node.children[0].lastElementChild
-    //   ],
-    //   0.6,
-    //   {
-    //     // y: -30,
-    //     ease: "power3.InOut",
-    //     stagger: {
-    //       amount: 0.2
-    //     }
-    //   }
-    // );
-  };
+      console.log("ON EXIT APP", main, mainAfter, el);
+
+      let tl = new TimelineLite();
+
+      // gsap.to(pReveal, 3, {
+      //   zIndex: "9999999999999",
+      //   // opacity: 1,
+      //   height: "75px",
+      //   transform: "scale(1)",
+      //   delay: 1,
+      // });
+      tl.to(
+        pageReveal,
+        {
+          duration: 3, cssRule: { width: "0%", ease: "Power2.easeInOut", delay: 0.5 },
+          "-=1.5"
+        });
+
+      // if (appReveal) {
+      //   console.log("appReveal :", appReveal);
+      //   // gsap.to(el, 1, { opacity: 0, height: "10px", delay: 0.5 });
+      //   gsap.to(
+      //     appReveal,
+      //     1.5,
+      //     { width: "0%", ease: "Power2.easeInOut", delay: 0.5 },
+      //     "-=1.5"
+      //   );
+      // } else if (mainReveal) {
+      //   console.log("mainReveal : ", mainReveal);
+      //   // gsap.to(el, 1, { opacity: 0, height: "10px", delay: 0.5 });
+      //   gsap.to(
+      //     mainReveal,
+      //     1.5,
+      //     { width: "0%", ease: "Power2.easeInOut", delay: 0.5 },
+      //     "-=1.5"
+      //   );
+      // } else if (homeReveal) {
+      //   console.log("homeReveal : ", homeReveal);
+      //   // gsap.to(el, 1, { opacity: 0, height: "10px", delay: 0.5 });
+      //   gsap.to(
+      //     homeReveal,
+      //     1.5,
+      //     { width: "0%", ease: "Power2.easeInOut", delay: 0.5 },
+      //     "-=1.5"
+      //   );
+      // } else if (pageReveal) {
+      //   console.log("pageReveal : ", pageReveal);
+      //   // gsap.to(el, 1, { opacity: 0, height: "10px", delay: 0.5 });
+      //   gsap.to(
+      //     pageReveal,
+      //     1.5,
+      //     { width: "0%", ease: "Power2.easeInOut", delay: 0.5 },
+      //     "-=1.5"
+      //   );
+      // }
+      onEnter();
+    });
 
   // useEffect(() => {
   //   onEnter();
@@ -139,10 +148,20 @@ function App() {
                   unmountOnExit
                 >
                   <div className="page">
-                    {/* <div className="test" /> */}
+                    {/* <div
+                      ref={(el) => (divReveal = el)}
+                      className="div-reveal"
+                    ></div>
+                    <div
+                      ref={(el) => (divReveal2 = el)}
+                      className="div-reveal-2"
+                    ></div> */}
+                    <p ref={pReveal} className="p-reveal">
+                      GSAP IMAGE REVEAL
+                    </p>
                     <Component />
                     <div>
-                      <h1 className="transition-title">La Jazzinière</h1>
+                      {/* <h1 className="transition-title">La Jazzinière</h1> */}
                     </div>
                   </div>
                 </CSSTransition>
@@ -153,7 +172,8 @@ function App() {
       </Router>
     </>
   );
-}
+};
+
 
 export default App;
 

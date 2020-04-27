@@ -52,7 +52,7 @@ const Header = ({ history }) => {
 
   return (
     <header>
-      <div className="container">
+      <div className="contain">
         <div className="wrapper">
           <div className="inner-header">
             <div className="logo">

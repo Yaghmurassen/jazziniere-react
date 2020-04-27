@@ -10,20 +10,20 @@ const Title = ({ lineContent, lineContent2 }) => {
       ease: "power3.out",
       y: 64,
       stagger: {
-        amount: 0.15
-      }
+        amount: 0.15,
+      },
     });
   }, [line1, line2]);
 
   return (
     <h1 className="page-title">
       <div className="line-wrap">
-        <div ref={el => (line1 = el)} className="line">
+        <div ref={(el) => (line1 = el)} className="line">
           {lineContent}
         </div>
       </div>
       <div className="line-wrap">
-        <div ref={el => (line2 = el)} className="line">
+        <div ref={(el) => (line2 = el)} className="line">
           {lineContent2}
         </div>
       </div>

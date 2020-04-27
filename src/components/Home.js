@@ -31,47 +31,64 @@ export default class Home extends React.Component {
   // routes = [
   //   { path: "/opportunities", name: "Opportunities", Component: Opportunities },
   //   { path: "/solutions", name: "Solutions", Component: Solutions },
-  //   { path: "/contact-us", name: "Contact", Component: Contact }
+  //   { path: "/contact-us", name: "Contact", Component: Contact },
   // ];
 
-  // onEnter = node => {
+  // onEnter = (node) => {
+  //   console.log("onEnter Element : ", node.children[0].firstElementChild);
+
   //   // console.log("onEnter document.body : ", document.body);
   //   // console.log(
   //   //   "onEnter Element : ",
   //   //   node.children[0].firstElementChild.querySelector(".line-wrap")
   //   // );
-  //   gsap.from(
-  //     [node.children[0].firstElementChild, node.children[0].lastElementChild],
-  //     0.6,
-  //     {
-  //       y: 30,
-  //       delay: 0.6,
-  //       ease: "power3.InOut",
-  //       opacity: 0,
-  //       stagger: {
-  //         amount: 0.6
-  //       }
-  //     }
-  //   );
+
+  //   // gsap.to(mainReveal, 1, {
+  //   //   width: "100%",
+  //   //   ease: "Power2.easeInOut",
+  //   //   delay: 0.5,
+  //   // });
+  //   // gsap.to(pReveal, 1, { opacity: 1, height: "75px", delay: 0.5 });
+  //   // gsap.to(pReveal, 1, { opacity: 0, height: "10px", delay: 0.5 });
+  //   // gsap.to(
+  //   //   mainReveal,
+  //   //   1.5,
+  //   //   { width: "0%", ease: "Power2.easeInOut", delay: 0.5 },
+  //   //   "-=1.5"
+  //   // );
+
+  //   // gsap.from(
+  //   //   [node.children[0].firstElementChild, node.children[0].lastElementChild],
+  //   //   0.6,
+  //   //   {
+  //   //     y: 30,
+  //   //     delay: 0.6,
+  //   //     ease: "power3.InOut",
+  //   //     opacity: 0,
+  //   //     stagger: {
+  //   //       amount: 0.6,
+  //   //     },
+  //   //   }
+  //   // );
   // };
 
-  // onExit = node => {
+  // onExit = (node) => {
+  //   console.log("onExit Element : ", node.children[0].firstElementChild);
   //   // console.log(
-  //   //   "onExit Element : ",
-  //   //   node.children[0].firstElementChild.childNodes[0].className
+  //   //   "onExit Element querySelector : ",
+  //   //   node.querySelector(".inner")
   //   // );
-  //   // console.log("onExir Element : ", node.querySelector(".inner"));
-  //   gsap.to(
-  //     [node.children[0].firstElementChild, node.children[0].lastElementChild],
-  //     0.6,
-  //     {
-  //       y: -30,
-  //       ease: "power3.InOut",
-  //       stagger: {
-  //         amount: 0.2
-  //       }
-  //     }
-  //   );
+  //   // gsap.to(
+  //   //   [node.children[0].firstElementChild, node.children[0].lastElementChild],
+  //   //   0.6,
+  //   //   {
+  //   //     y: -30,
+  //   //     ease: "power3.InOut",
+  //   //     stagger: {
+  //   //       amount: 0.2,
+  //   //     },
+  //   //   }
+  //   // );
   // };
 
   componentDidMount() {
@@ -81,12 +98,12 @@ export default class Home extends React.Component {
     TweenMax.defaultOverwrite = false;
     console.log(document.body.querySelector(".three"));
     let timeline = new TimelineMax({
-      onComplete: function() {
+      onComplete: function () {
         gsap.to(".one", 0.0001, {
-          transform: "scale(1)"
+          transform: "scale(1)",
         });
         console.log("onComlplete : ", document.body.style.width);
-      }
+      },
     });
 
     timeline
@@ -94,7 +111,7 @@ export default class Home extends React.Component {
         ".three",
         10,
         {
-          bottom: "-120px"
+          bottom: "-120px",
         },
         { y: -1400, bottom: -675 },
         "-=10"
@@ -103,12 +120,12 @@ export default class Home extends React.Component {
         ".two",
         10,
         {
-          y: 90
+          y: 90,
           // height: "105vh"
           // transform: "scale(1.34)"
         },
         {
-          y: -400
+          y: -400,
         },
         "-=10"
       )
@@ -116,10 +133,10 @@ export default class Home extends React.Component {
         ".one",
         10,
         {
-          y: 0
+          y: 0,
         },
         {
-          y: -350
+          y: -350,
           // transform: "scale(1.3)"
         },
         "-=10"
@@ -128,11 +145,11 @@ export default class Home extends React.Component {
         ".one",
         10,
         {
-          y: 0
+          y: 0,
         },
         {
           // y: -350
-          transform: "scale(1.3)"
+          transform: "scale(1.3)",
         },
         "-=10"
       )
@@ -140,7 +157,7 @@ export default class Home extends React.Component {
         ".one",
         10,
         {
-          transform: "scale(1)"
+          transform: "scale(1)",
         },
         "-=10"
       )
@@ -149,7 +166,7 @@ export default class Home extends React.Component {
         8,
         {
           y: "-50%",
-          opacity: 0
+          opacity: 0,
         },
         "-=10"
       )
@@ -158,7 +175,7 @@ export default class Home extends React.Component {
         10,
         {
           opacity: 1,
-          display: "block"
+          display: "block",
         },
         "-=3"
       );
@@ -166,7 +183,7 @@ export default class Home extends React.Component {
     new ScrollMagic.Scene({
       triggerElement: this.section.current,
       duration: "100%", // scroll distance
-      triggerHook: 0
+      triggerHook: 0,
     })
       .setTween(timeline)
       .setPin("section") // pins the element for the the scene's duration
@@ -181,26 +198,26 @@ export default class Home extends React.Component {
       {
         x: -100,
         opacity: 0,
-        display: "inline-block"
+        display: "inline-block",
       },
       {
         x: 0,
-        opacity: 1
+        opacity: 1,
       }
     );
     gsap.to(".btn-groupe", 1, {
-      backgroundColor: "rgba(0, 0, 0, 0.67)"
+      backgroundColor: "rgba(0, 0, 0, 0.67)",
     });
   };
 
   HoverLeaveGroup = () => {
     console.log("On Leave Group");
     gsap.to(".title-groupe", 0.3, {
-      opacity: 0
+      opacity: 0,
       // x: 70
     });
     gsap.to(".btn-groupe", 0.7, {
-      backgroundColor: "transparent"
+      backgroundColor: "transparent",
     });
   };
 
@@ -212,25 +229,25 @@ export default class Home extends React.Component {
       {
         x: -100,
         opacity: 0,
-        display: "block"
+        display: "block",
       },
       {
         x: 0,
-        opacity: 1
+        opacity: 1,
       }
     );
     gsap.to(".btn-culture", 1, {
-      backgroundColor: "rgba(0, 0, 0, 0.67)"
+      backgroundColor: "rgba(0, 0, 0, 0.67)",
     });
   };
 
   HoverLeaveCulture = () => {
     console.log("On Leave Culture");
     gsap.to(".title-culture", 0.3, {
-      opacity: 0
+      opacity: 0,
     });
     gsap.to(".btn-culture", 0.7, {
-      backgroundColor: "transparent"
+      backgroundColor: "transparent",
     });
   };
 
@@ -242,25 +259,25 @@ export default class Home extends React.Component {
       {
         x: -100,
         opacity: 0,
-        display: "block"
+        display: "block",
       },
       {
         x: 0,
-        opacity: 1
+        opacity: 1,
       }
     );
     gsap.to(".btn-collectif", 1, {
-      backgroundColor: "rgba(0, 0, 0, 0.67)"
+      backgroundColor: "rgba(0, 0, 0, 0.67)",
     });
   };
 
   HoverLeaveCollectif = () => {
     console.log("On Leave Collectif");
     gsap.to(".title-collectif", 0.3, {
-      opacity: 0
+      opacity: 0,
     });
     gsap.to(".btn-collectif", 0.7, {
-      backgroundColor: "transparent"
+      backgroundColor: "transparent",
     });
   };
 
@@ -272,30 +289,30 @@ export default class Home extends React.Component {
       {
         x: -100,
         opacity: 0,
-        display: "block"
+        display: "block",
       },
       {
         x: 0,
-        opacity: 1
+        opacity: 1,
       }
     );
     gsap.to(".btn-propos", 1, {
-      backgroundColor: "rgba(0, 0, 0, 0.67)"
+      backgroundColor: "rgba(0, 0, 0, 0.67)",
     });
   };
 
   HoverLeavePropos = () => {
     console.log("On Leave propos");
     gsap.to(".title-propos", 0.3, {
-      opacity: 0
+      opacity: 0,
     });
     gsap.to(".btn-propos", 0.7, {
-      backgroundColor: "transparent"
+      backgroundColor: "transparent",
     });
   };
 
   render() {
-    console.log(this.routes, this.section.current);
+    // console.log(this.routes, this.section.current);
     return (
       <section className="inner" ref={this.section}>
         <div className="container">
@@ -316,7 +333,7 @@ export default class Home extends React.Component {
             onMouseEnter={() => this.HoverGroup()}
             onMouseLeave={() => this.HoverLeaveGroup()}
           >
-            <Link className="title-groupe" to="/opportunities">
+            <Link className="title-groupe" to="/ania">
               Voir les groupes
             </Link>
             {/* <Route
