@@ -51,11 +51,30 @@ export default class Ania extends React.Component {
     super(props);
     this.controller = new ScrollMagic.Controller({});
     this.section = React.createRef();
+    this.onScroll =  this.onScroll.bind(this);
+    this.state = {
+        active: false,
+    };
+  }
+
+  onScroll = () => {
+    let btn = document.getElementsByClassName("btn-top");
+    let bodySize = document.body.scrollHeight;
+
+    if (window.scrollY > 300) {
+        btn[0].classList.add("show");
+    } else {
+        btn[0].classList.remove("show");
+    }
+    if ((bodySize - window.scrollY) > 900) {
+        document.getElementsByClassName("social-link")[0].classList.add("show");
+    } else {
+        document.getElementsByClassName("social-link")[0].classList.remove("show");
+    } 
   }
 
   componentDidMount() {
 
-    let btn = document.getElementsByClassName("btn-top");
     let w = window.innerWidth;
     let burger = document.getElementsByClassName("burger");
     let overlay = document.getElementsByClassName("overlay");
@@ -64,26 +83,26 @@ export default class Ania extends React.Component {
     let logo = document.getElementsByClassName("logo");
     let header = document.getElementsByClassName("header");
     let li = document.getElementsByClassName("li-home");
-    let bodySize = document.body.scrollHeight;
 
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 300) {
-            btn[0].classList.add("show");
-        } else {
-            btn[0].classList.remove("show");
-        }
-        if ((bodySize - window.scrollY) > 900) {
-            document.getElementsByClassName("social-link")[0].classList.add("show");
-        } else {
-            document.getElementsByClassName("social-link")[0].classList.remove("show");
-        } 
-    });
+    window.addEventListener('scroll', this.onScroll, false);
+    // window.addEventListener('scroll', function() {
+    //     if (window.scrollY > 300) {
+    //         btn[0].classList.add("show");
+    //     } else {
+    //         btn[0].classList.remove("show");
+    //     }
+    //     if ((bodySize - window.scrollY) > 900) {
+    //         document.getElementsByClassName("social-link")[0].classList.add("show");
+    //     } else {
+    //         document.getElementsByClassName("social-link")[0].classList.remove("show");
+    //     } 
+    // });
 
-    btn[0].addEventListener('click', function(e){
-       e.preventDefault();
-       window.scrollTo({ top: 0, behavior: 'smooth' });
-       return false;
-     });
+    // btn[0].addEventListener('click', function(e){
+    //    e.preventDefault();
+    //    window.scrollTo({ top: 0, behavior: 'smooth' });
+    //    return false;
+    //  });
 
     if (w < 992) {
         burger[0].classList.remove("hide");
@@ -91,26 +110,43 @@ export default class Ania extends React.Component {
         burger[0].classList.add("hide");
      }
 
-     console.log(burger[0], overlay[0], li[0]);
-
-    (burger[0], overlay[0], li[0]).addEventListener('click', function(e){
-        burger.classList.toggle('clicked');
-        overlay.classList.toggle('show');
-        navDiv.classList.toggle('show');
-        document.body.classList.toggle('overflow');
-        document.body.classList.toggle('overflow-hidden');
-        header.classList.toggle('translate-header');
-        navOg.classList.toggle('translate-nav');
-        logo.classList.toggle('translate-logo');
-    }) 
+    //  console.log("burger[0], overlay[0], li[0] :::: ", burger[0], overlay[0], li[0]);
+   
+    // burger[0].addEventListener('click', function(e) {
+    //     burger[0].classList.toggle('clicked');
+    //     overlay[0].classList.toggle('show');
+    //     navDiv[0].classList.toggle('show');
+    //     header[0].classList.toggle('translate-header');
+    //     navOg[0].classList.toggle('translate-nav');
+    //     logo[0].classList.toggle('translate-logo');
+    //     document.body.classList.toggle('overflow');
+    //     document.body.classList.toggle('overflow-hidden');
+    // }) 
    }
+
+   toggleNav = () => {
+        this.setState({ active: !this.state.active });
+        if (!this.state.active) {
+            console.log("document.body     ", document.body)
+            document.body.classList.add('overflow');
+            document.body.classList.add('overflow-hidden');
+        } else {
+            document.body.classList.remove('overflow');
+            document.body.classList.remove('overflow-hidden');
+        }
+   }
+
+   componentWillUnmount() {
+        // you need to unbind the same listener that was binded.
+        window.removeEventListener('scroll', this.onScroll, false);
+    }
 
   render() {
     return (
       <Fragment>
-        <header>
-          <nav className="nav-og nav-down">
-            <div className="logo">
+        <header className={this.state.active ? "translate-header" : ""}>
+          <nav className={this.state.active ? "nav-og nav-down translate-nav" : "nav-og nav-down"}>
+            <div className={this.state.active ? "logo translate-logo" : "logo"}>
                 <Link to="/">
                     <img src={logo} alt="logo" />
                 </Link>
@@ -141,7 +177,7 @@ export default class Ania extends React.Component {
                 </li>
               </ul>
             </div>
-            <div className="nav-div">
+            <div className={this.state.active ? "nav-div show" : "nav-div"}>
               <ul className="nav-home">
                 <li className="li-home">
                   <img src={logo} alt="logo" />
@@ -210,10 +246,10 @@ export default class Ania extends React.Component {
                 </a>
               </div>
             </div>
-            <div className="burger">
+            <div className= {this.state.active ? "burger clicked" : "burger"} onClick={() => this.toggleNav()}>
               <span />
             </div>
-            <div className="overlay" />
+            <div className={this.state.active ? "overlay show" : "overlay"} />
           </nav>
         </header>
 
