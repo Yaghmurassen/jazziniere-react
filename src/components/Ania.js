@@ -10,8 +10,7 @@ import * as ScrollMagic from "scrollmagic"; // Or use scrollmagic-with-ssr to av
 import { TweenMax, TimelineMax } from "gsap";
 import { ScrollMagicPluginGsap } from "scrollmagic-plugin-gsap";
 import { CSSRulePlugin, CSSPlugin } from "gsap/all";
-import { Collapse } from 'react-burgers'
-
+import { Collapse } from "react-burgers";
 
 // ROUTES
 
@@ -51,29 +50,16 @@ export default class Ania extends React.Component {
     super(props);
     this.controller = new ScrollMagic.Controller({});
     this.section = React.createRef();
-    this.onScroll =  this.onScroll.bind(this);
+    this.onScroll = this.onScroll.bind(this);
     this.state = {
-        active: false,
+      active: false,
     };
   }
 
-  onScroll = () => {
-    let btn = document.getElementsByClassName("btn-top");
-    let bodySize = document.body.scrollHeight;
-
-    if (window.scrollY > 300) {
-        btn[0].classList.add("show");
-    } else {
-        btn[0].classList.remove("show");
-    }
-    if ((bodySize - window.scrollY) > 900) {
-        document.getElementsByClassName("social-link")[0].classList.add("show");
-    } else {
-        document.getElementsByClassName("social-link")[0].classList.remove("show");
-    } 
-  }
-
   componentDidMount() {
+    window.scrollTo(0, 0);
+    window.addEventListener("scroll", this.onScroll, false);
+    this.toggleNavScroll();
 
     let w = window.innerWidth;
     let burger = document.getElementsByClassName("burger");
@@ -84,72 +70,116 @@ export default class Ania extends React.Component {
     let header = document.getElementsByClassName("header");
     let li = document.getElementsByClassName("li-home");
 
-    window.addEventListener('scroll', this.onScroll, false);
-    // window.addEventListener('scroll', function() {
-    //     if (window.scrollY > 300) {
-    //         btn[0].classList.add("show");
-    //     } else {
-    //         btn[0].classList.remove("show");
-    //     }
-    //     if ((bodySize - window.scrollY) > 900) {
-    //         document.getElementsByClassName("social-link")[0].classList.add("show");
-    //     } else {
-    //         document.getElementsByClassName("social-link")[0].classList.remove("show");
-    //     } 
-    // });
-
-    // btn[0].addEventListener('click', function(e){
-    //    e.preventDefault();
-    //    window.scrollTo({ top: 0, behavior: 'smooth' });
-    //    return false;
-    //  });
-
     if (w < 992) {
-        burger[0].classList.remove("hide");
+      burger[0].classList.remove("hide");
     } else {
-        burger[0].classList.add("hide");
-     }
-
-    //  console.log("burger[0], overlay[0], li[0] :::: ", burger[0], overlay[0], li[0]);
-   
-    // burger[0].addEventListener('click', function(e) {
-    //     burger[0].classList.toggle('clicked');
-    //     overlay[0].classList.toggle('show');
-    //     navDiv[0].classList.toggle('show');
-    //     header[0].classList.toggle('translate-header');
-    //     navOg[0].classList.toggle('translate-nav');
-    //     logo[0].classList.toggle('translate-logo');
-    //     document.body.classList.toggle('overflow');
-    //     document.body.classList.toggle('overflow-hidden');
-    // }) 
-   }
-
-   toggleNav = () => {
-        this.setState({ active: !this.state.active });
-        if (!this.state.active) {
-            console.log("document.body     ", document.body)
-            document.body.classList.add('overflow');
-            document.body.classList.add('overflow-hidden');
-        } else {
-            document.body.classList.remove('overflow');
-            document.body.classList.remove('overflow-hidden');
-        }
-   }
-
-   componentWillUnmount() {
-        // you need to unbind the same listener that was binded.
-        window.removeEventListener('scroll', this.onScroll, false);
+      burger[0].classList.add("hide");
     }
+  }
+
+  toggleNavScroll = (e) => {
+    // Hide Header on on scroll down
+    let didScroll;
+    let lastScrollTop = 0;
+    let header = document.getElementsByClassName("header");
+    let delta = 5;
+    let navbarHeight = window.outerHeight;
+
+    window.addEventListener("scroll", function (event) {
+      didScroll = true;
+    });
+
+    setInterval(function () {
+      if (didScroll) {
+        hasScrolled();
+        didScroll = false;
+      }
+    }, 250);
+
+    function hasScrolled(e) {
+      let st = e.scrollTop();
+      console.log(
+        "HESSSS :::   ",
+        document.body.clientHeight,
+        st,
+        didScroll,
+        navbarHeight
+      );
+      // Make sure they scroll more than delta
+      if (Math.abs(lastScrollTop - st) <= delta) return;
+
+      // If they scrolled down and are past the navbar, add class .nav-up.
+      // This is necessary so you never see what is "behind" the navbar.
+      if (st > lastScrollTop && st > navbarHeight) {
+        // Scroll Down
+        header.classList.remove("nav-down").classList.add("nav-up");
+      } else {
+        // Scroll Up
+        if (st + window.height < document.body.clientHeight) {
+          header.classList.remove("nav-up").classList.add("nav-down");
+        }
+      }
+      lastScrollTop = st;
+    }
+  };
+
+  toggleNav = () => {
+    this.setState({ active: !this.state.active });
+    if (!this.state.active) {
+      console.log("document.body     ", document.body);
+      document.body.classList.add("overflow");
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow");
+      document.body.classList.remove("overflow-hidden");
+    }
+  };
+
+  onScroll = () => {
+    let btn = document.getElementsByClassName("btn-top");
+    let bodySize = document.body.scrollHeight;
+
+    if (window.scrollY > 300) {
+      btn[0].classList.add("show");
+    } else {
+      btn[0].classList.remove("show");
+    }
+
+    if (bodySize - window.scrollY > 900) {
+      document.getElementsByClassName("social-link")[0].classList.add("show");
+    } else {
+      document
+        .getElementsByClassName("social-link")[0]
+        .classList.remove("show");
+    }
+  };
+
+  scrollTop = (event) => {
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return false;
+  };
+
+  componentWillUnmount() {
+    // you need to unbind the same listener that was binded.
+    window.removeEventListener("scroll", this.onScroll, false);
+  }
 
   render() {
     return (
       <Fragment>
         <header className={this.state.active ? "translate-header" : ""}>
-          <nav className={this.state.active ? "nav-og nav-down translate-nav" : "nav-og nav-down"}>
+          <nav
+            className={
+              this.state.active
+                ? "nav-og nav-down translate-nav"
+                : "nav-og nav-down"
+            }
+          >
             <div className={this.state.active ? "logo translate-logo" : "logo"}>
-                <Link to="/">
-                    <img src={logo} alt="logo" />
-                </Link>
+              <Link to="/">
+                <img src={logo} alt="logo" />
+              </Link>
               <h3>
                 ACCENT REDUCTION COACH à Paris <br />
                 Apprendre à parler anglais sans accent
@@ -178,7 +208,7 @@ export default class Ania extends React.Component {
               </ul>
             </div>
             <div className={this.state.active ? "nav-div show" : "nav-div"}>
-              <ul className="nav-home">
+              <ul className="nav-home" onClick={() => this.toggleNav()}>
                 <li className="li-home">
                   <img src={logo} alt="logo" />
                 </li>
@@ -246,17 +276,23 @@ export default class Ania extends React.Component {
                 </a>
               </div>
             </div>
-            <div className= {this.state.active ? "burger clicked" : "burger"} onClick={() => this.toggleNav()}>
+            <div
+              className={this.state.active ? "burger clicked" : "burger"}
+              onClick={() => this.toggleNav()}
+            >
               <span />
             </div>
-            <div className={this.state.active ? "overlay show" : "overlay"} />
+            <div
+              onClick={() => this.toggleNav()}
+              className={this.state.active ? "overlay show" : "overlay"}
+            />
           </nav>
         </header>
 
         <main className="main-ania">
           <section>
             <article id="presentation">
-            {/* <Collapse/> */}
+              {/* <Collapse/> */}
               <img src={elearning} alt="e-learning" />
               <div>
                 <h1>Coaching en Réduction d’Accent</h1>
@@ -296,8 +332,8 @@ export default class Ania extends React.Component {
                   <b>
                     prononciation en anglais, effacer progressivement votre
                     accent français et maîtriser la prononciation américaine
-                   </b>
-                   (ou un autre accent anglophone de votre choix) pour rester
+                  </b>
+                  (ou un autre accent anglophone de votre choix) pour rester
                   maître de vos messages en toutes circonstances.
                 </p>
                 <p>
@@ -590,7 +626,7 @@ export default class Ania extends React.Component {
         <section id="contact">
           <article className="touch">
             <iframe
-              src="https://docs.google.com/forms/d/e/1FAIpQLScjw1sGTczwOLcsGRdDt38vDj6mhkad-zpSI6jAqIY4rKtemw/viewform"
+              src="https://docs.google.com/forms/u/1/d/e/1FAIpQLSdjmysqaETz8r5Tzz1VmeJ3RilMebAH1QsQsiWnLRqwI8MA8g/formResponse"
               frameBorder="0"
               width="620"
               height="800"
@@ -602,7 +638,7 @@ export default class Ania extends React.Component {
             ></iframe>
           </article>
 
-        <footer>
+          <footer>
             <article>
               <div className="footer-grid">
                 <div className="footer-info">
@@ -654,12 +690,26 @@ export default class Ania extends React.Component {
                 </div>
               </div>
             </article>
-        </footer>
+          </footer>
         </section>
 
-
-        <button className="btn-top">
-          <i className="fab fa-adobe"></i>
+        <button className="btn-top" onClick={(e) => this.scrollTop(e)}>
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            width="20px"
+            data-prefix="fas"
+            data-icon="chevron-up"
+            className="svg-inline--fa fa-chevron-up fa-w-14"
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+          >
+            <path
+              fill="currentColor"
+              d="M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z"
+            ></path>
+          </svg>
         </button>
       </Fragment>
     );

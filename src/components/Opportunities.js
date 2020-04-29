@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, Fragment } from "react";
 import "../App.scss";
 import Back from "../images/home/back.jpg";
-import { TimelineLite, Power2 } from "gsap";
+import { TimelineLite } from "gsap";
 import CSSRulePlugin from "gsap/CSSRulePlugin";
 
 const Opportunities = () => {

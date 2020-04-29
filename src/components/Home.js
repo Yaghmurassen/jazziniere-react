@@ -92,6 +92,7 @@ export default class Home extends React.Component {
   // };
 
   componentDidMount() {
+    window.scrollTo(0, 0);
     gsap.registerPlugin(CSSPlugin);
     ScrollMagicPluginGsap(ScrollMagic, TweenMax, TimelineMax);
 
@@ -316,7 +317,6 @@ export default class Home extends React.Component {
     return (
       <section className="inner" ref={this.section}>
         <div className="container">
-          <div className="title">Jazzinière</div>
           <div className="images">
             <div className="image-wrapper one" ref={this.scale}>
               <img src={full} alt="full" />
