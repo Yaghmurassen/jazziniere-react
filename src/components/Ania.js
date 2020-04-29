@@ -78,6 +78,7 @@ export default class Ania extends React.Component {
   }
 
   toggleNavScroll = (e) => {
+    console.log("window ::::::::::", window);
     // Hide Header on on scroll down
     let didScroll;
     let lastScrollTop = 0;
@@ -97,7 +98,7 @@ export default class Ania extends React.Component {
     }, 250);
 
     function hasScrolled(e) {
-      let st = e.scrollTop();
+      let st = window.scrollTop;
       console.log(
         "HESSSS :::   ",
         document.body.clientHeight,
