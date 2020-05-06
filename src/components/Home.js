@@ -26,6 +26,9 @@ export default class Home extends React.Component {
     super(props);
     this.controller = new ScrollMagic.Controller({});
     this.section = React.createRef();
+    this.state = {
+      hover: false,
+    };
   }
 
   // routes = [
@@ -192,7 +195,8 @@ export default class Home extends React.Component {
   }
 
   HoverGroup = () => {
-    console.log("On Hover Group");
+    this.setState({ hover: !this.state.hover });
+    console.log("On Hover Group", this.state.hover);
     gsap.fromTo(
       ".title-groupe",
       1,
@@ -212,7 +216,8 @@ export default class Home extends React.Component {
   };
 
   HoverLeaveGroup = () => {
-    console.log("On Leave Group");
+    this.setState({ hover: !this.state.hover });
+    console.log("On HoverLeave Group", this.state.hover);
     gsap.to(".title-groupe", 0.3, {
       opacity: 0,
       // x: 70

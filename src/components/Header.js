@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useReducer } from "react";
 import { withRouter, Link, NavLink } from "react-router-dom";
 import Hamburger from "./Hamburger";
+import Headroom from "headroom.js";
 
 const Header = ({ history }) => {
   // State of our Menu
   const [state, setState] = useState({
     initial: false,
     clicked: null,
-    menuName: "Menu"
+    menuName: "Menu",
   });
+  let header = useRef(null);
   // State of our button
   const [disabled, setDisabled] = useState(false);
 
   //Use Effect
   useEffect(() => {
+    let toggleHeader = new Headroom(header);
+    toggleHeader.init();
     //Listening for page changes.
     history.listen(() => {
       setState({ clicked: false, menuName: "Menu" });
@@ -27,17 +31,17 @@ const Header = ({ history }) => {
       setState({
         initial: null,
         clicked: true,
-        menuName: "Close"
+        menuName: "Close",
       });
     } else if (state.clicked === true) {
       setState({
         clicked: !state.clicked,
-        menuName: "Menu"
+        menuName: "Menu",
       });
     } else if (state.clicked === false) {
       setState({
         clicked: !state.clicked,
-        menuName: "Close"
+        menuName: "Close",
       });
     }
   };
@@ -51,7 +55,7 @@ const Header = ({ history }) => {
   };
 
   return (
-    <header>
+    <header ref={(el) => (header = el)} className="headroom">
       <div className="contain">
         <div className="wrapper">
           <div className="inner-header">

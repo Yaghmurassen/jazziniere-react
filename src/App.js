@@ -25,8 +25,10 @@ const routes = [
 
 function App() {
   let mainReveal = CSSRulePlugin.getRule(".scrollmagic-pin-spacer:before");
+  let appli = useRef(null);
 
   const onEnter = (node) => {
+    console.log("appli ///////////////////////// ", appli);
     // console.log("onEnter document.body : ", document.body);
     // console.log(
     //   "onEnter Element : ",
@@ -77,6 +79,7 @@ function App() {
     // });
   };
   const onExit = (node) => {
+    console.log("appli ///////////////////////// ", appli);
     gsap.to(mainReveal, 2, {
       left: "0px",
       width: "0%",
@@ -126,7 +129,7 @@ function App() {
   return (
     <>
       <Router>
-        <div className="App">
+        <div className="App" ref={(el) => (appli = el)}>
           <Header />
           {routes.map(({ path, Component }) => (
             <Route key={path} exact path={path}>

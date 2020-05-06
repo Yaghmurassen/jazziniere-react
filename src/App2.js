@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Route } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { gsap, TimelineLite, Power2 } from "gsap";
@@ -35,90 +35,134 @@ const App = () => {
   let appReveal = useRef(null);
   let pReveal = useRef(null);
 
-  useEffect(() => {
-    gsap.registerPlugin(CSSRulePlugin);
+  const onEnter = useCallback(
+    (node) => {
+      gsap.registerPlugin(CSSRulePlugin);
 
-    console.log("USE EFFECT");
-    onEnter();
-    onExit();
-  }, []);
+      let tl = new TimelineLite();
+      // let el = node.children[0];
+      let pageReveal = CSSRulePlugin.getRule(".pagee");
+      // let pageRevealAfter = CSSRulePlugin.getRule(".pagee::after");
 
-  const onEnter = (node) => {
-    gsap.registerPlugin(CSSRulePlugin);
+      console.log(
+        "ON ENTER APP",
+        node,
+        appReveal,
+        appRevealAfter,
+        //   el,
+        pageReveal,
+        pageRevealOg
+        // pageRevealAfter
+      );
 
-    let tl = new TimelineLite();
-    // let el = node.children[0];
-    let pageReveal = CSSRulePlugin.getRule(".pagee");
-    let pageRevealAfter = CSSRulePlugin.getRule(".pagee::after");
+      // tl.to(appReveal, 3, {
+      //   opacity: 1,
+      // });
+      // tl.set("body", { overflow: "hidden" });
+      tl.to(appRevealAfter, {
+        duration: 2,
+        cssRule: {
+          width: "100%",
+          ease: "Power4.easeInOut",
+          // delay: 0.5,
+        },
+      });
+      // tl.set(appRevealAfter, {
+      //   cssRule: {
+      //     left: "unset",
+      //     right: "0px",
+      //     delay: -1,
+      //     width: "100%",
+      //   },
+      // });
+      // tl.to(appRevealAfter, {
+      //   duration: 2,
+      //   cssRule: {
+      //     width: "0%",
+      //     ease: "Power4.easeInOut",
+      //     // delay: 0.5,
+      //   },
+      // });
 
-    console.log(
-      "ON ENTER APP",
-      node,
-      appReveal,
-      appRevealAfter,
-      //   el,
-      pageReveal,
-      pageRevealOg,
-      pageRevealAfter
-    );
-    tl.to(pageRevealAfter, {
-      duration: 1.5,
-      cssRule: {
-        width: "100%",
-        ease: "Power2.easeInOut",
-        // delay: 0.5,
-      },
-    });
-    tl.from(pageRevealAfter, {
-      duration: 3,
-      cssRule: {
-        width: "0%",
-        ease: "Power2.easeInOut",
-        delay: 2.5,
-      },
-    });
-  };
+      // tl.from(pageRevealAfter, {
+      //   duration: 3,
+      //   cssRule: {
+      //     width: "100%",
+      //     ease: "Power2.easeInOut",
+      //     delay: 2.5,
+      //   },
+      // });
+    },
+    [appRevealAfter, pageReveal]
+  );
 
-  const onExit = (node) => {
-    gsap.registerPlugin(CSSRulePlugin);
+  const onExit = useCallback(
+    (node) => {
+      gsap.registerPlugin(CSSRulePlugin);
 
-    let tl = new TimelineLite();
-    // let el = node.children[0];
-    let main = CSSRulePlugin.getRule(".pagee");
-    let mainAfter = CSSRulePlugin.getRule(".pagee:after");
+      let tl = new TimelineLite();
+      // let el = node.children[0];
+      let main = CSSRulePlugin.getRule(".pagee");
+      let mainAfter = CSSRulePlugin.getRule(".pagee:after");
 
-    console.log(
-      "ON EXIT APP",
-      node,
-      appReveal,
-      appRevealAfter,
-      main,
-      pageRevealOg,
-      mainAfter
-    );
+      console.log(
+        "ON EXIT APP",
+        node,
+        appReveal,
+        appRevealAfter,
+        main,
+        pageRevealOg,
+        mainAfter
+      );
+      // tl.to(appReveal, 3, {
+      //   opacity: 1,
+      // });
+      tl.set(appRevealAfter, {
+        cssRule: {
+          left: "unset",
+          right: "0px",
+          width: "100%",
+        },
+      });
+      tl.to(appRevealAfter, {
+        duration: 1,
+        cssRule: {
+          width: "0%",
+          ease: "Power2.easeIn",
+          // delay: 0.5,
+        },
+      });
+      // tl.to(mainAfter, {
+      //   duration: 3,
+      //   cssRule: { width: "0%", ease: "Power2.easeInOut", delay: 0.5 },
+      // });
+    },
+    [appRevealAfter]
+  );
 
-    tl.to(mainAfter, {
-      duration: 3,
-      cssRule: { width: "0%", ease: "Power2.easeInOut", delay: 0.5 },
-    });
-  };
+  // useEffect(() => {
+  //   gsap.registerPlugin(CSSRulePlugin);
+
+  //   console.log("USE EFFECT");
+  //   onEnter();
+  //   onExit();
+  // }, [onEnter, onExit]);
 
   return (
     <>
       <Router>
-        <div className="App" ref={(el) => (appReveal = el)}>
-          <Header />
-          {routes.map(({ path, Component }) => (
-            <Route key={path} exact path={path}>
-              {({ match }) => (
-                <CSSTransition
-                  in={match != null}
-                  timeout={1200}
-                  classNames="page"
-                  onEntering={onEnter}
-                  onExit={onExit}
-                  unmountOnExit
-                >
+        {routes.map(({ path, Component }) => (
+          <Route key={path} exact path={path}>
+            {({ match }) => (
+              <CSSTransition
+                in={match != null}
+                timeout={200}
+                classNames="page"
+                onEntering={onEnter}
+                onExit={onExit}
+                unmountOnExit
+              >
+                <div className="App" ref={(el) => (appReveal = el)}>
                   <div className="pagee" ref={(el) => (pageRevealOg = el)}>
                     <div className="reveal">
                       <p ref={(el) => (pReveal = el)} className="p-reveal">
@@ -127,11 +171,11 @@ const App = () => {
                       <Component />
                     </div>
                   </div>
-                </CSSTransition>
-              )}
-            </Route>
-          ))}
-        </div>
+                </div>
+              </CSSTransition>
+            )}
+          </Route>
+        ))}
       </Router>
     </>
   );
