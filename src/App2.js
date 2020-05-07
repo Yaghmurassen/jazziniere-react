@@ -27,7 +27,7 @@ const App = () => {
   gsap.registerPlugin(CSSRulePlugin);
 
   let appRevealAfter = CSSRulePlugin.getRule(".App:after");
-  let appRevealBefore = CSSRulePlugin.getRule(".App:before");
+  // let appRevealBefore = CSSRulePlugin.getRule(".App:before");
   let mainReveal = CSSRulePlugin.getRule(".main:after");
   let homeReveal = CSSRulePlugin.getRule(".scrollmagic-pin-spacer:after");
   let pageReveal = CSSRulePlugin.getRule(".page:after");
@@ -84,19 +84,22 @@ const App = () => {
         cssRule: {
           left: "unset",
           right: "0px",
-          // delay: -1,
           width: "100%",
         },
       });
       //////////////////////////////////// PAGE EXIT
-      tl.to(appRevealAfter, {
-        duration: 2,
-        cssRule: {
-          width: "0%",
-          ease: "Power4.easeInOut",
-          delay: 5,
+      tl.to(
+        appRevealAfter,
+        {
+          duration: 2,
+          cssRule: {
+            width: "0%",
+            ease: "Power4.easeInOut",
+            delay: 5,
+          },
         },
-      });
+        "+=2"
+      );
       tl.set(appRevealAfter, {
         cssRule: {
           left: "0px",
