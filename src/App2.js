@@ -27,6 +27,7 @@ const App = () => {
   gsap.registerPlugin(CSSRulePlugin);
 
   let appRevealAfter = CSSRulePlugin.getRule(".App:after");
+  let appRevealBefore = CSSRulePlugin.getRule(".App:before");
   let mainReveal = CSSRulePlugin.getRule(".main:after");
   let homeReveal = CSSRulePlugin.getRule(".scrollmagic-pin-spacer:after");
   let pageReveal = CSSRulePlugin.getRule(".page:after");
@@ -39,7 +40,21 @@ const App = () => {
     (node) => {
       gsap.registerPlugin(CSSRulePlugin);
 
-      let tl = new TimelineLite();
+      const setAfter = () => {
+        tl.set(appRevealAfter, {
+          cssRule: {
+            left: "Opx",
+            right: "unset",
+            // delay: -1,
+            width: "0%",
+          },
+        });
+      };
+
+      let tl = new TimelineLite({
+        onComplete: setAfter,
+      });
+
       // let el = node.children[0];
       let pageReveal = CSSRulePlugin.getRule(".pagee");
       // let pageRevealAfter = CSSRulePlugin.getRule(".pagee::after");
@@ -49,10 +64,8 @@ const App = () => {
         node,
         appReveal,
         appRevealAfter,
-        //   el,
         pageReveal,
         pageRevealOg
-        // pageRevealAfter
       );
 
       // tl.to(appReveal, 3, {
@@ -60,29 +73,38 @@ const App = () => {
       // });
       // tl.set("body", { overflow: "hidden" });
       tl.to(appRevealAfter, {
-        duration: 2,
+        duration: 1,
         cssRule: {
           width: "100%",
           ease: "Power4.easeInOut",
-          // delay: 0.5,
+          // delay: 5,
         },
       });
-      // tl.set(appRevealAfter, {
-      //   cssRule: {
-      //     left: "unset",
-      //     right: "0px",
-      //     delay: -1,
-      //     width: "100%",
-      //   },
-      // });
-      // tl.to(appRevealAfter, {
-      //   duration: 2,
-      //   cssRule: {
-      //     width: "0%",
-      //     ease: "Power4.easeInOut",
-      //     // delay: 0.5,
-      //   },
-      // });
+      tl.set(appRevealAfter, {
+        cssRule: {
+          left: "unset",
+          right: "0px",
+          // delay: -1,
+          width: "100%",
+        },
+      });
+      //////////////////////////////////// PAGE EXIT
+      tl.to(appRevealAfter, {
+        duration: 2,
+        cssRule: {
+          width: "0%",
+          ease: "Power4.easeInOut",
+          delay: 5,
+        },
+      });
+      tl.set(appRevealAfter, {
+        cssRule: {
+          left: "0px",
+          right: "unset",
+          // delay: -1,
+          width: "0%",
+        },
+      });
 
       // tl.from(pageRevealAfter, {
       //   duration: 3,
@@ -128,7 +150,7 @@ const App = () => {
         duration: 1,
         cssRule: {
           width: "0%",
-          ease: "Power2.easeIn",
+          ease: "Power.easeIn",
           // delay: 0.5,
         },
       });
@@ -156,10 +178,10 @@ const App = () => {
             {({ match }) => (
               <CSSTransition
                 in={match != null}
-                timeout={200}
+                timeout={2000}
                 classNames="page"
-                onEntering={onEnter}
-                onExit={onExit}
+                onEnter={onEnter}
+                // onExit={onExit}
                 unmountOnExit
               >
                 <div className="App" ref={(el) => (appReveal = el)}>
